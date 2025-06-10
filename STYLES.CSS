@@ -1,0 +1,592 @@
+/* Reset e stili base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Tipografia */
+h1 {
+  font-size: 2rem;
+  color: #1a3c5a;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #666;
+  margin: 20px 0 10px;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+/* Dashboard */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card.red {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.card.red .card-content,
+.card.red .sbar-content,
+.card.red .alert-content,
+.card.red .vitali-content,
+.card.red .intervallo-medicazione {
+  color: #fff;
+}
+
+.card.dimesso {
+  background-color: #e6e6e6;
+  color: #555;
+  font-style: italic;
+}
+
+.card strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.card small {
+  color: #777;
+}
+
+.card.red small {
+  color: #eee;
+}
+
+/* Stile per l'etichetta NUOVO RICOVERO */
+.nuovo-ricovero {
+  background-color: #3f8efc;
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nuovo-ricovero-label {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* Stile per evidenziare solo l'alert */
+.alert-highlight {
+  background-color: #ffd700;
+  color: #333;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Stili per SBAR, Vitali e Alert nella card */
+.sbar-content,
+.vitali-content,
+.alert-content {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.sbar-content p,
+.vitali-content p,
+.alert-content p {
+  margin: 5px 0;
+}
+
+.sbar-content strong,
+.vitali-content strong,
+.alert-content strong {
+  font-size: 0.95rem;
+  display: inline;
+}
+
+.intervallo-medicazione {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.card.red .intervallo-medicazione {
+  color: #eee;
+}
+
+/* Scheda paziente */
+.scheda {
+  max-width: 1000px;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-weight: 600;
+  color: #1a3c5a;
+  display: block;
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #3f8efc;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-help {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 2px;
+  display: block;
+}
+
+.dispositivi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 25px;
+}
+
+.dispositivo-item {
+  flex: 1 1 220px;
+}
+
+.flex-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.flex-row > * {
+  flex: 1 1 200px;
+}
+
+#tipoTessutoAltroContainer,
+#sedeLesioneAltroContainer {
+  flex: 1 1 200px;
+}
+
+/* Sezione SBAR */
+.sbar-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #d1d9e0;
+}
+
+.sbar-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.sbar-section label {
+  font-weight: 600;
+  color: #1a3c5a;
+  margin-bottom: 5px;
+}
+
+.sbar-section .form-help {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+/* Sezione Parametri Vitali */
+.vitali-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #d1d9e0;
+}
+
+.vitali-section label {
+  font-weight: 600;
+  color: #1a3c5a;
+  margin-bottom: 5px;
+}
+
+.vitali-section input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* Sezione Alert */
+.alert-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #d1d9e0;
+}
+
+.alert-section input,
+.alert-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.alert-section textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.alert-section label {
+  font-weight: 600;
+  color: #1a3c5a;
+  margin-bottom: 5px;
+}
+
+#listaAlert {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fafafa;
+  margin-top: 10px;
+}
+
+#listaAlert li {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+#listaAlert li:last-child {
+  border-bottom: none;
+}
+
+/* Pulsanti */
+.btn {
+  background-color: #3f8efc;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  background-color: #2b79e0;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-danger {
+  background-color: #e63946;
+}
+
+.btn-danger:hover {
+  background-color: #c81e2b;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  margin-left: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* Lista medicazioni */
+#listaMedicazioni {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fafafa;
+  margin-top: 10px;
+}
+
+#listaMedicazioni li {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+#listaMedicazioni li:last-child {
+  border-bottom: none;
+}
+
+#listaMedicazioni .medicazione-details {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Toast notifiche */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 1000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background-color: #2ecc71;
+}
+
+.toast.error {
+  background-color: #e63946;
+}
+
+/* Stili per la stampa */
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+    color: #000;
+    margin: 20mm;
+  }
+
+  header, .header-actions, .action-buttons, .toast, .scheda {
+    display: none !important;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 10mm;
+    page-break-inside: avoid;
+    background: #fff;
+    color: #000;
+    padding: 5mm;
+    height: auto;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+
+  .card.red {
+    background: #fff;
+    border: 2px solid red;
+    color: #000;
+  }
+
+  .card.dimesso {
+    background: #fff;
+    border: 1px dashed #555;
+    color: #555;
+    font-style: italic;
+  }
+
+  .card .card-content,
+  .card .sbar-content,
+  .card .vitali-content,
+  .card .alert-content,
+  .card .intervallo-medicazione {
+    color: #000;
+  }
+
+  .card small {
+    color: #555;
+    font-size: 8pt;
+  }
+
+  .alert-highlight {
+    background-color: #ffd700;
+    color: #333;
+  }
+
+  .nuovo-ricovero {
+    background: #fff;
+    color: #000;
+    border: 1px solid #3f8efc;
+    padding: 5px;
+    margin-bottom: 5mm;
+  }
+
+  .nuovo-ricovero-label {
+    background-color: #3f8efc;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .nuovo-ricovero .btn {
+    display: none; /* Nasconde il pulsante nella stampa */
+  }
+
+  hr {
+    border-top: 1px solid #ccc;
+    margin: 10mm 0;
+  }
+
+  h1, h3 {
+    color: #000;
+  }
+
+  p.timestamp {
+    font-size: 10pt;
+    color: #555;
+    text-align: center;
+    margin-bottom: 10mm;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .flex-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .dispositivo-item {
+    flex: 1 1 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .sbar-content, .vitali-content, .alert-content {
+    font-size: 0.85rem;
+  }
+}

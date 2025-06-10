@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione Pazienti</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-hospital-user"></i> Gestione Pazienti </h1>
+    <div class="header-actions">
+      <button class="btn" onclick="aggiungiPaziente()" aria-label="Aggiungi nuovo paziente"><i class="fas fa-plus"></i> Aggiungi</button>
+      <button class="btn" onclick="esportaPazienti()" aria-label="Esporta dati in JSON"><i class="fas fa-download"></i> Esporta</button>
+      <button class="btn" onclick="document.getElementById('importaFile').click()" aria-label="Importa dati da JSON"><i class="fas fa-upload"></i> Importa</button>
+      <input type="file" id="importaFile" accept=".json" style="display: none;" onchange="importaPazienti(event)" aria-label="Seleziona file JSON da importare">
+      <button class="btn" onclick="stampaDashboard()" aria-label="Stampa dashboard"><i class="fas fa-print"></i> Stampa Dashboard</button>
+    </div>
+  </header>
+  <main>
+    <div class="grid" id="dashboard"></div>
+    <div class="scheda" id="schedaPaziente" style="display: none;">
+      <div class="flex-row">
+        <div>
+          <label for="inputNome">Nome:</label>
+          <input type="text" id="inputNome" required aria-required="true" placeholder="Nome del paziente">
+        </div>
+        <div>
+          <label for="inputCognome">Cognome:</label>
+          <input type="text" id="inputCognome" required aria-required="true" placeholder="Cognome del paziente">
+        </div>
+        <div>
+          <label for="inputLetto">Letto n°:</label>
+          <input type="number" id="inputLetto" min="1" required aria-required="true" placeholder="Numero letto">
+        </div>
+      </div>
+      <div class="flex-row">
+        <div>
+          <label for="dataNascita">Data di nascita:</label>
+          <input type="date" id="dataNascita" aria-describedby="dataNascitaHelp">
+          <small id="dataNascitaHelp">Formato: GG/MM/AAAA</small>
+        </div>
+        <div>
+          <label for="dieta">Dieta:</label>
+          <input type="text" id="dieta" placeholder="Es. Normale, Diabetica..." aria-label="Dieta del paziente">
+        </div>
+        <div>
+          <label for="usaMad">Usa MAD:</label>
+          <select id="usaMad" aria-label="Uso del MAD">
+            <option value="">-- Seleziona --</option>
+            <option value="sì">SÌ</option>
+            <option value="no">NO</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div>
+          <label for="repartoProvenienza">Reparto di provenienza:</label>
+          <input type="text" id="repartoProvenienza" placeholder="Es. Medicina, Chirurgia..." aria-label="Reparto di provenienza del paziente">
+        </div>
+        <div>
+          <label for="nuovoRicovero">Nuovo Ricovero:</label>
+          <select id="nuovoRicovero" aria-label="Stato nuovo ricovero">
+            <option value="false">No</option>
+            <option value="true">SÌ</option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <label>SBAR:</label>
+      <div class="sbar-section">
+        <div class="flex-row">
+          <div>
+            <label for="sbarSituazione">Situazione:</label>
+            <textarea id="sbarSituazione" rows="3" placeholder="Descrizione della situazione attuale..." aria-label="Situazione del paziente" required></textarea>
+            <small class="form-help">Descrivi brevemente la situazione attuale.</small>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div>
+            <label for="sbarContesto">Contesto:</label>
+            <textarea id="sbarContesto" rows="3" placeholder="Informazioni rilevanti sulla storia clinica..." aria-label="Contesto clinico del paziente" required></textarea>
+            <small class="form-help">Fornisci dettagli sulla storia clinica.</small>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div>
+            <label for="sbarValutazione">Valutazione:</label>
+            <textarea id="sbarValutazione" rows="3" placeholder="Valutazione attuale..." aria-label="Valutazione clinica del paziente" required></textarea>
+            <small class="form-help">Indica segni vitali, sintomi osservati.</small>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div>
+            <label for="sbarRaccomandazioni">Raccomandazioni:</label>
+            <textarea id="sbarRaccomandazioni" rows="3" placeholder="Azioni consigliate..." aria-label="Raccomandazioni per il paziente" required></textarea>
+            <small class="form-help">Specifica le azioni necessarie.</small>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <label>Parametri Vitali:</label>
+      <div class="vitali-section">
+        <div class="flex-row">
+          <div>
+            <label for="pressioneArteriosa">Pressione Arteriosa (mmHg):</label>
+            <input type="text" id="pressioneArteriosa" placeholder="Es. 120/80" aria-label="Pressione arteriosa del paziente">
+          </div>
+          <div>
+            <label for="frequenzaCardiaca">Frequenza Cardiaca (bpm):</label>
+            <input type="number" id="frequenzaCardiaca" min="0" placeholder="Es. 80" aria-label="Frequenza cardiaca del paziente">
+          </div>
+          <div>
+            <label for="frequenzaRespiratoria">Frequenza Respiratoria (atti/min):</label>
+            <input type="number" id="frequenzaRespiratoria" min="0" placeholder="Es. 16" aria-label="Frequenza respiratoria del paziente">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div>
+            <label for="temperatura">Temperatura Corporea (°C):</label>
+            <input type="number" step="0.1" id="temperatura" min="0" placeholder="Es. 36.6" aria-label="Temperatura corporea del paziente">
+          </div>
+          <div>
+            <label for="pesoIngresso">Peso all'ingresso (kg):</label>
+            <input type="number" step="0.1" id="pesoIngresso" min="0" placeholder="Es. 70.5" aria-label="Peso all'ingresso del paziente">
+          </div>
+          <div>
+            <label for="spo2">SpO2 (%):</label>
+            <input type="number" id="spo2" min="0" max="100" placeholder="Es. 98" aria-label="Saturazione di ossigeno del paziente">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div>
+            <label for="hgt">HGT (mg/dL, se diabetico):</label>
+            <input type="number" id="hgt" min="0" placeholder="Es. 120" aria-label="Glicemia del paziente" disabled>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <label>Dispositivi presenti:</label>
+      <div class="dispositivi">
+        <div class="dispositivo-item">
+          <label for="cvSelect">CV (Tipo):</label>
+          <select id="cvSelect" aria-label="Tipo di catetere venoso">
+            <option value="">-- Nessuno --</option>
+            <option value="Poliuretano">Poliuretano</option>
+            <option value="Silicone">Silicone</option>
+            <option value="Teflon">Teflon</option>
+            <option value="PVC">PVC</option>
+            <option value="Elastomero termoplastico">Elastomero termoplastico</option>
+          </select>
+          <input type="text" id="cvSize" placeholder="Grandezza CV (es. CH14)" aria-label="Grandezza del catetere venoso">
+        </div>
+        <div class="dispositivo-item">
+          <label for="cvcSelect">CVC:</label>
+          <select id="cvcSelect" aria-label="Tipo di catetere venoso centrale">
+            <option value="">-- Nessuno --</option>
+            <option value="Non tunnellizzato">Non tunnellizzato</option>
+            <option value="Tunnellizzato">Tunnellizzato</option>
+            <option value="Port-a-cath">Port-a-cath</option>
+            <option value="Giugulare">Giugulare</option>
+            <option value="Succlavia">Succlavia</option>
+            <option value="Femore">Femore</option>
+          </select>
+        </div>
+        <div class="dispositivo-item">
+          <label for="cvpSelect">CVP:</label>
+          <select id="cvpSelect" aria-label="Tipo di catetere venoso periferico">
+            <option value="">-- Nessuno --</option>
+            <option value="Cannula ad ago">Cannula ad ago</option>
+            <option value="Catetere corto">Catetere corto</option>
+            <option value="Midline">Midline</option>
+            <option value="Radiale">Radiale</option>
+            <option value="Mediana">Mediana</option>
+            <option value="Brachiale">Brachiale</option>
+          </select>
+        </div>
+        <div class="dispositivo-item">
+          <label for="piccSelect">PICC:</label>
+          <select id="piccSelect" aria-label="Tipo di catetere centrale inserito perifericamente">
+            <option value="">-- Nessuno --</option>
+            <option value="Singolo lume">Singolo lume</option>
+            <option value="Doppio lume">Doppio lume</option>
+            <option value="Triplo lume">Triplo lume</option>
+            <option value="Valvolato">Valvolato</option>
+            <option value="Non valvolato">Non valvolato</option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <label>Sede della lesione:</label>
+      <div class="flex-row">
+        <div>
+          <select id="sedeLesione" aria-label="Sede della lesione">
+            <option value="">-- Seleziona sede --</option>
+            <option>Sacro</option>
+            <option>Calcagno destro</option>
+            <option>Calcagno sinistro</option>
+            <option>Trocantere destro</option>
+            <option>Trocantere sinistro</option>
+            <option>G Gomito destro</option>
+            <option>Gomito sinistro</option>
+            <option>Malleolo destro</option>
+            <option>Malleolo sinistro</option>
+            <option>Occipite</option>
+            <option>Scapola destra</option>
+            <option>Scapola sinistra</option>
+            <option>Orecchio destro</option>
+            <option>Orecchio sinistro</option>
+            <option>Tallone</option>
+            <option>Colonna vertebrale</option>
+            <option>Glande</option>
+            <option>Altro</option>
+          </select>
+        </div>
+        <div id="sedeLesioneAltroContainer" style="display: none;">
+          <label for="sedeLesioneAltro">Specifica altra sede:</label>
+          <input type="text" id="sedeLesioneAltro" placeholder="Specifica la sede..." aria-label="Specifica altra sede della lesione">
+        </div>
+      </div>
+      <label for="dataLesione">Data rilevazione lesione:</label>
+      <input type="date" id="dataLesione" aria-label="Data di rilevazione della lesione">
+      <div class="flex-row">
+        <div>
+          <label for="tipoTessutoSelect">Tipo di tessuto:</label>
+          <select id="tipoTessutoSelect" aria-label="Tipo di tessuto della lesione">
+            <option value="">-- Seleziona tipo --</option>
+            <option value="Necrosi">Necrosi</option>
+            <option value="Fibrina">Fibrina</option>
+            <option value="Granulazione">Granulazione</option>
+            <option value="Epiteliizzazione">Epiteliizzazione</option>
+            <option value="Essudato">Essudato</option>
+            <option value="Altro">Altro</option>
+          </select>
+        </div>
+        <div id="tipoTessutoAltroContainer" style="display: none;">
+          <label for="tipoTessutoAltro">Specifica altro tipo:</label>
+          <input type="text" id="tipoTessutoAltro" placeholder="Specifica il tipo di tessuto..." aria-label="Specifica altro tipo di tessuto">
+        </div>
+        <div>
+          <label for="stadioLesione">Stadio della lesione:</label>
+          <select id="stadioLesione" aria-label="Stadio della lesione">
+            <option value="">-- Seleziona stadio --</option>
+            <option value="Stadio I">Stadio I</option>
+            <option value="Stadio II">Stadio II</option>
+            <option value="Stadio III">Stadio III</option>
+            <option value="Stadio IV">Stadio IV</option>
+            <option value="Tessuto sospetto di lesione profonda">Tessuto sospetto di lesione profonda</option>
+            <option value="Non classificabile">Non classificabile</option>
+          </select>
+        </div>
+      </div>
+      <label for="note">Annotazioni cliniche:</label>
+      <textarea id="note" rows="4" placeholder="Annotazioni cliniche..." aria-label="Annotazioni cliniche"></textarea>
+      <hr>
+      <label>Modalità di esecuzione:</label>
+      <div class="flex-row">
+        <div>
+          <textarea id="modalitaEsecuzione" rows="3" placeholder="Descrivi come è stata eseguita la medicazione..." aria-label="Modalità di esecuzione della medicazione"></textarea>
+        </div>
+      </div>
+      <label style="margin-top: 15px;">Aggiungi/Modifica medicazione:</label>
+      <div class="flex-row">
+        <div>
+          <label for="medicazioneData">Data:</label>
+          <input type="date" id="medicazioneData" aria-label="Data della medicazione" required>
+        </div>
+        <div>
+          <label for="medicazioneNota">Nota:</label>
+          <input type="text" id="medicazioneNota" placeholder="Nota medicazione..." aria-label="Nota della medicazione" required>
+        </div>
+        <div>
+          <label for="intervalloMedicazione">Intervallo Medicazione (giorni):</label>
+          <select id="intervalloMedicazione" aria-label="Intervallo di medicazione">
+            <option value="1">Ogni giorno</option>
+            <option value="2">Ogni 2 giorni</option>
+            <option value="3">Ogni 3 giorni</option>
+            <option value="4">Ogni 4 giorni</option>
+            <option value="5">Ogni 5 giorni</option>
+            <option value="6">Ogni 6 giorni</option>
+            <option value="7">Ogni 7 giorni</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex-row" style="align-items: flex-end;">
+        <button class="btn" onclick="aggiungiMedicazione()" aria-label="Aggiungi medicazione"><i class="fas fa-plus"></i> Aggiungi</button>
+        <button class="btn" id="btnModificaMedicazione" style="display: none;" onclick="confermaModificaMedicazione()" aria-label="Conferma modifica medicazione"><i class="fas fa-check"></i> Conferma Modifica</button>
+      </div>
+      <label style="margin-top: 15px;">Storico medicazioni:</label>
+      <div class="flex-row" style="align-items: flex-end;">
+        <input type="date" id="filtroData" aria-label="Filtra medicazioni per data">
+        <button class="btn" onclick="filtraMedicazioni()" aria-label="Filtra medicazioni"><i class="fas fa-filter"></i> Filtra</button>
+      </div>
+      <ul id="listaMedicazioni" aria-live="polite"></ul>
+      <hr>
+      <label>Aggiungi/Modifica Alert:</label>
+      <div class="alert-section">
+        <div class="flex-row">
+          <div>
+            <label for="alertData">Data:</label>
+            <input type="date" id="alertData" aria-label="Data dell'alert" required>
+          </div>
+          <div>
+            <label for="alertNota">Nota:</label>
+            <textarea id="alertNota" rows="3" placeholder="Es. Cambiare CV..." aria-label="Nota dell'alert" required></textarea>
+          </div>
+        </div>
+        <div class="flex-row" style="align-items: flex-end;">
+          <button class="btn" onclick="aggiungiAlert()" aria-label="Aggiungi alert"><i class="fas fa-bell"></i> Aggiungi Alert</button>
+        </div>
+      </div>
+      <label style="margin-top: 15px;">Storico Alert:</label>
+      <ul id="listaAlert" aria-live="polite"></ul>
+      <hr>
+      <div class="action-buttons">
+        <button class="btn btn-danger" id="btnDimetti" onclick="dimettiPaziente()" aria-label="Dimetti paziente"><i class="fas fa-sign-out-alt"></i> Dimetti</button>
+        <button class="btn" onclick="stampaScheda()" aria-label="Stampa scheda"><i class="fas fa-print"></i> Stampa</button>
+        <button class="btn" onclick="salvaScheda()" aria-label="Salva scheda"><i class="fas fa-save"></i> Salva</button>
+        <button class="btn" onclick="tornaAllaDashboard()" aria-label="Torna alla lista pazienti"><i class="fas fa-arrow-left"></i> Torna</button>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+  <script src="script.js"></script>
+</body>
+</html>
